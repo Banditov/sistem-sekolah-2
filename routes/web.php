@@ -40,13 +40,13 @@ Route::prefix('students')->name('students.')->group(function () {
 
 // School Class Routes
 Route::prefix('classes')->name('classes.')->group(function () {
-    Route::get('/', [IndexController::class])->name('index');
-    Route::get('/create', [CreateController::class])->name('create');
-    Route::post('/', [StoreController::class])->name('store');
-    Route::get('/{id}', [ShowController::class])->name('show');
-    Route::get('/{id}/edit', [EditController::class])->name('edit');
-    Route::put('/{id}', [UpdateController::class])->name('update');
-    Route::delete('/{id}', [DestroyController::class])->name('destroy');
+    Route::get('/', [IndexController::class, '__invoke'])->name('index');
+    Route::get('/create', [CreateController::class, '__invoke'])->name('create');
+    Route::post('/', [StoreController::class, '__invoke'])->name('store');
+    Route::get('/{id}', [ShowController::class, '__invoke'])->name('show');
+    Route::get('/{id}/edit', [EditController::class, '__invoke'])->name('edit');
+    Route::put('/{id}', [UpdateController::class, '__invoke'])->name('update');
+    Route::delete('/{id}', [DestroyController::class, '__invoke'])->name('destroy');
 });
 
 // Major Routes

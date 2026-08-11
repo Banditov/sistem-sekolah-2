@@ -7,44 +7,77 @@ use Illuminate\Http\Request;
 class MajorController extends Controller
 {
     // GET ALL
-    public function index()
+        public function index()
     {
-        return "Showing list of all majors";
-    }
+        $title = "Sistem Sekolah - Daftar Jurusan";
+        $majors = $this->getMajors();
 
-    // GET POST FORM
-    public function create()
-    {
-        return "Showing add major form";
-    }
-
-    // POST
-    public function store(Request $request)
-    {
-        return "Storing major data";
+        return view('majors.index', [
+            'title' => $title,
+            'majors' => $majors,
+        ]);
     }
 
     // GET DETAILS
     public function show($id)
     {
-        return "Showing major with ID: " . $id;
+        $title = "Sistem Sekolah - Detail Jurusan";
+        $major = $this->findMajor($id);
+
+        return view('majors.show', [
+            'title' => $title,
+            'major' => $major,
+        ]);
+    }
+
+    // GET POST FORM
+    public function create()
+    {
+        $title = "Sistem Sekolah - Tambah Jurusan";
+
+        return view('majors.create', [
+            'title' => $title,
+        ]);
+    }
+
+    // POST
+    public function store(Request $request)
+    {
+
+        return redirect()
+            ->route('majors.index')
+            ->with('success', 'Jurusan berhasil ditambahkan ke buku induk.');
     }
 
     // GET PUT FORM
     public function edit($id)
     {
-        return "Showing edit major form with ID: " . $id;
+        $title = "Sistem Sekolah - Edit Jurusan";
+        $major = $this->findMajor($id);
+
+        return view('majors.edit', [
+            'title' => $title,
+            'major' => $major,
+        ]);
     }
 
     // PUT
     public function update(Request $request, $id)
     {
-        return "Updating major data with ID: " . $id;
+        $major = $this->findMajor($id);
+
+        return redirect()
+            ->route('majors.show', $major['id'])
+            ->with('success', 'Data jurusan berhasil diperbarui.');
     }
 
     // DELETE
     public function destroy($id)
     {
-        return "Deleting major data with ID: " . $id;
+        $major = $this->findMajor($id);
+
+        return redirect()
+            ->route('majors.index')
+            ->with('success', 'Data jurusan berhasil dihapus.');
     }
 }

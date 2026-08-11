@@ -7,8 +7,14 @@ use Illuminate\Http\Request;
 
 class IndexController extends Controller
 {
-    public function __invoke(Request $request)
+    public function __invoke()
     {
-        return "Showing list of all classes";
+        $title = "Sistem Sekolah - Daftar Kelas";
+        $classes = $this->getClasses();
+
+        return view('classes.index', [
+            'title' => $title,
+            'classes' => $classes,
+        ]);
     }
 }

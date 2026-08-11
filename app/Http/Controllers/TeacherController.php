@@ -9,42 +9,75 @@ class TeacherController extends Controller
     // GET ALL
     public function index()
     {
-        return "Showing list of all teachers";
-    }
+        $title = "Sistem Sekolah - Daftar Guru";
+        $teachers = $this->getTeachers();
 
-    // GET POST FORM
-    public function create()
-    {
-        return "Showing add teacher form";
-    }
-
-    // POST
-    public function store(Request $request)
-    {
-        return "Storing teacher data";
+        return view('teachers.index', [
+            'title' => $title,
+            'teachers' => $teachers,
+        ]);
     }
 
     // GET DETAILS
     public function show($id)
     {
-        return "Showing teacher with ID: " . $id;
+        $title = "Sistem Sekolah - Detail Guru";
+        $teacher = $this->findTeacher($id);
+
+        return view('teachers.show', [
+            'title' => $title,
+            'teacher' => $teacher,
+        ]);
+    }
+
+    // GET POST FORM
+    public function create()
+    {
+        $title = "Sistem Sekolah - Tambah Guru";
+
+        return view('teachers.create', [
+            'title' => $title,
+        ]);
+    }
+
+    // POST
+    public function store(Request $request)
+    {
+
+        return redirect()
+            ->route('teachers.index')
+            ->with('success', 'Guru berhasil ditambahkan ke buku induk.');
     }
 
     // GET PUT FORM
     public function edit($id)
     {
-        return "Showing edit teacher form with ID: " . $id;
+        $title = "Sistem Sekolah - Edit Guru";
+        $teacher = $this->findTeacher($id);
+
+        return view('teachers.edit', [
+            'title' => $title,
+            'teacher' => $teacher,
+        ]);
     }
 
     // PUT
     public function update(Request $request, $id)
     {
-        return "Updating teacher data with ID: " . $id;
+        $teacher = $this->findTeacher($id);
+
+        return redirect()
+            ->route('teachers.show', $teacher['id'])
+            ->with('success', 'Data guru berhasil diperbarui.');
     }
 
     // DELETE
     public function destroy($id)
     {
-        return "Deleting teacher data with ID: " . $id;
+        $teacher = $this->findTeacher($id);
+
+        return redirect()
+            ->route('teachers.index')
+            ->with('success', 'Data guru berhasil dihapus.');
     }
 }

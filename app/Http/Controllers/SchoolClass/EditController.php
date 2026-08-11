@@ -7,8 +7,18 @@ use Illuminate\Http\Request;
 
 class EditController extends Controller
 {
-    public function __invoke(Request $request)
+    public function __invoke($id)
     {
-        return "Showing edit class form with ID: {$request->id}";
+        $title = "Sistem Sekolah - Edit Kelas";
+        $class = $this->findClass($id);
+        $majors = $this->getMajors();
+        $teachers = $this->getTeachers();
+
+        return view('classes.edit', [
+            'title' => $title,
+            'class' => $class,
+            'majors' => $majors,
+            'teachers' => $teachers,
+        ]);
     }
 }
