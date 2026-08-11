@@ -9,13 +9,13 @@ class StudentController extends Controller
     // GET ALL
     public function index()
     {
-        return "Showing list of all students";
+        return view('students.index');
     }
 
     // GET POST FORM
     public function create()
     {
-        return "Showing add student form";
+        return view('students.create');
     }
 
     // POST
@@ -27,13 +27,13 @@ class StudentController extends Controller
     // GET DETAILS
     public function show($id)
     {
-        return "Showing student with ID: " . $id;
+        return view('students.show');
     }
 
     // GET PUT FORM
     public function edit($id)
     {
-        return "Showing edit student form with ID: " . $id;
+        return view('students.edit');
     }
 
     // PUT
