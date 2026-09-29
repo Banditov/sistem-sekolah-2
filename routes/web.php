@@ -13,7 +13,7 @@ use App\Http\Controllers\SchoolClass\UpdateController;
 use App\Http\Controllers\MajorController;
 
 Route::get('/', function () {
-    return view('welcome');
+    return redirect('/students');
 });
 
 // Teacher Routes
