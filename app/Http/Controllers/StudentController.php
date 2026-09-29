@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Student;
 use Illuminate\Http\Request;
 
 class StudentController extends Controller
@@ -10,7 +11,9 @@ class StudentController extends Controller
     public function index()
     {
         $title = "Sistem Sekolah - Daftar Siswa";
-        $students = $this->getStudents();
+
+        $students = Student::select(['id', 'nis', 'name', 'class', 'major'])
+            ->get();
 
         return view('students.index', [
             'title' => $title,
@@ -19,14 +22,13 @@ class StudentController extends Controller
     }
 
     // GET DETAILS
-    public function show($id)
+    public function show(Student $student)
     {
         $title = "Sistem Sekolah - Detail Siswa";
-        $student = $this->findStudent($id);
 
         return view('students.show', [
-            'title' => $title,
-            'student' => $student,
+            'title'     => $title,
+            'student'   => $student
         ]);
     }
 
@@ -43,16 +45,26 @@ class StudentController extends Controller
     // POST
     public function store(Request $request)
     {
-        return redirect()
-            ->route('students.index')
-            ->with('success', 'Siswa berhasil ditambahkan ke buku induk.');
+        // Validasi
+        $validatedRequest = $request->validate([
+            'nis'    => ['required', 'string', 'size:4', 'unique:students,nis'],
+            'name'   => ['required', 'string'],
+            'gender' => ['required', 'string', 'in:Laki-laki,Perempuan'],
+            'major'  => ['required', 'string', 'in:AKL,TKJ,BiD'],
+            'class'  => ['required', 'string']
+        ]);
+
+        // Tambahkan Data ke Database
+        Student::create($validatedRequest);
+
+        // Handle If Success
+        return redirect()->route('students.index');
     }
 
     // GET PUT FORM
-    public function edit($id)
+    public function edit(Student $student)
     {
         $title = "Sistem Sekolah - Edit Siswa";
-        $student = $this->findStudent($id);
 
         return view('students.edit', [
             'title' => $title,
@@ -61,22 +73,31 @@ class StudentController extends Controller
     }
 
     // PUT
-    public function update(Request $request, $id)
+    public function update(Student $student, Request $request)
     {
-        $student = $this->findStudent($id);
+        // Validasi
+        $validatedRequest = $request->validate([
+            'nis'    => ['required', 'string', 'size:4', 'unique:students,nis,' . $student->id],
+            'name'   => ['required', 'string'],
+            'gender' => ['required', 'string', 'in:Laki-laki,Perempuan'],
+            'major'  => ['required', 'string', 'in:AKL,TKJ,BiD'],
+            'class'  => ['required', 'string']
+        ]);
 
-        return redirect()
-            ->route('students.show', $student['id'])
-            ->with('success', 'Data siswa berhasil diperbarui.');
+        // Update Data
+        $student->update($validatedRequest);
+
+        // Handle if Success
+        return redirect()->route('students.index');
     }
 
     // DELETE
-    public function destroy($id)
+    public function destroy(Student $student)
     {
-        $student = $this->findStudent($id);
+        // Delete Data
+        $student->delete();
 
-        return redirect()
-            ->route('students.index')
-            ->with('success', 'Data siswa berhasil dihapus.');
+        // Handle if Success
+        return redirect()->route('students.index');
     }
 }

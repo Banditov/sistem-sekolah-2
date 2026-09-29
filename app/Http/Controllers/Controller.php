@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Student;
+
 abstract class Controller
 {
     public function getClasses()
@@ -73,47 +75,6 @@ abstract class Controller
                 ]
         ];
         return $teachers;
-    }
-
-    public function getStudents()
-    {
-        return [
-            [
-                'id' => 1,
-                'nis' => '22100001',
-                'name' => 'Andi',
-                'gender' => 'L',
-                'class' => 'XII TKJ 3',
-                'major' => 'TKJ',
-            ],
-            [
-                'id' => 2,
-                'nis' => '22100002',
-                'name' => 'Budi',
-                'gender' => 'L',
-                'class' => 'XII AKL',
-                'major' => 'AKL',
-            ],
-            [
-                'id' => 3,
-                'nis' => '22100003',
-                'name' => 'Citra',
-                'gender' => 'P',
-                'class' => 'XII BID',
-                'major' => 'BID',
-            ],
-        ];
-    }
-
-    public function findStudent($id)
-    {
-        $student = collect($this->getStudents())->firstWhere('id', (int) $id);
-
-        if (! $student) {
-            abort(404, 'Siswa tidak ditemukan');
-        }
-
-        return $student;
     }
 
     public function findTeacher($id)
