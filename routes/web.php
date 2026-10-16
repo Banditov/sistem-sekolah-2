@@ -11,10 +11,18 @@ use App\Http\Controllers\SchoolClass\ShowController;
 use App\Http\Controllers\SchoolClass\StoreController;
 use App\Http\Controllers\SchoolClass\UpdateController;
 use App\Http\Controllers\MajorController;
+use App\Http\Controllers\AuthController;
 
 Route::get('/', function () {
     return redirect('/students');
 });
+
+// Authentication Routes
+Route::get('/login', [AuthController::class, 'loginView'])->name('login-view');
+Route::post('/login', [AuthController::class, 'loginPost'])->name('login-post');
+Route::get('/register', [AuthController::class, 'registerView'])->name('register-view');
+Route::post('/register', [AuthController::class, 'registerPost'])->name('register-post');
+Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 
 // Teacher Routes
 Route::prefix('teachers')->name('teachers.')->group(function () {
