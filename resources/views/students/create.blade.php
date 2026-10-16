@@ -12,28 +12,32 @@
 
     <form action="{{ route('students.store') }}" method="POST" class="space-y-6 border border-[#E5E3DB] bg-white p-8">
         @csrf
+
+        {{-- NIS --}}
         <div>
             <label for="nis" class="mb-1.5 block text-xs font-semibold uppercase tracking-[0.1em] text-[#16213A]">
                 NIS
             </label>
-            <input value="{{ old('nis') }}" type="text" id="nis" name="nis" placeholder="Contoh: 2024010" value="{{ old('nis') }}"
+            <input type="text" id="nis" name="nis" placeholder="Contoh: 2024010" value="{{ old('nis') }}"
                 class="w-full border border-[#D9D6CD] bg-[#FCFBF8] px-3.5 py-2.5 text-sm placeholder:text-slate-400 focus:border-[#A16207] focus:bg-white focus:outline-none">
             @error('nis')
                 <span class="text-red-500 py-2">{{ $message }}</span>
             @enderror
         </div>
 
+        {{-- Name --}}
         <div>
             <label for="name" class="mb-1.5 block text-xs font-semibold uppercase tracking-[0.1em] text-[#16213A]">
                 Nama Lengkap
             </label>
-            <input value="{{ old('name') }}" type="text" id="name" name="name" placeholder="Nama lengkap siswa" value="{{ old('name') }}"
+            <input type="text" id="name" name="name" placeholder="Nama lengkap siswa" value="{{ old('name') }}"
                 class="w-full border border-[#D9D6CD] bg-[#FCFBF8] px-3.5 py-2.5 text-sm placeholder:text-slate-400 focus:border-[#A16207] focus:bg-white focus:outline-none">
             @error('name')
                 <span class="text-red-500 py-2">{{ $message }}</span>
             @enderror
         </div>
 
+        {{-- Gender --}}
         <div>
             <label for="gender" class="mb-1.5 block text-xs font-semibold uppercase tracking-[0.1em] text-[#16213A]">
                 Jenis Kelamin
@@ -49,35 +53,47 @@
             @enderror
         </div>
 
+        {{-- Major --}}
         <div>
-            <Label for="major" class="mb-1.5 block text-xs font-semibold uppercase tracking-[0.1em] text-[#16213A]">
+            <label for="major_id" class="mb-1.5 block text-xs font-semibold uppercase tracking-[0.1em] text-[#16213A]">
                 Jurusan
-            </Label>
-            <select id="major" name="major"
+            </label>
+            <select id="major_id" name="major_id"
                 class="w-full border border-[#D9D6CD] bg-[#FCFBF8] px-3.5 py-2.5 text-sm focus:border-[#A16207] focus:bg-white focus:outline-none">
-                <option value="" disabled selected>Pilih Jurusan</option>
-                <option @selected(old('major') === 'AKL') value="AKL">AKL</option>
-                <option @selected(old('major') === 'TKJ') value="TKJ">TKJ</option>
-                <option @selected(old('major') === 'BiD') value="BiD">BiD</option>
+                <option value="" disabled @selected(old('major_id') === null)>Pilih Jurusan</option>
+                @foreach ($majors as $major)
+                    <option value="{{ $major->id }}" @selected(old('major_id') == $major->id)>
+                        {{ $major->name }}
+                    </option>
+                @endforeach
             </select>
-            @error('major')
+            @error('major_id')
                 <span class="text-red-500 py-2">{{ $message }}</span>
             @enderror
         </div>
 
+        {{-- Class --}}
         <div>
-            <label for="class" class="mb-1.5 block text-xs font-semibold uppercase tracking-[0.1em] text-[#16213A]">
+            <label for="class_id" class="mb-1.5 block text-xs font-semibold uppercase tracking-[0.1em] text-[#16213A]">
                 Kelas
             </label>
-            <input value="{{ old('class') }}" type="text" id="class" name="class" placeholder="Contoh: X AKL 1" value="{{ old('class') }}"
-                class="w-full border border-[#D9D6CD] bg-[#FCFBF8] px-3.5 py-2.5 text-sm placeholder:text-slate-400 focus:border-[#A16207] focus:bg-white focus:outline-none">
-            @error('class')
+            <select id="class_id" name="class_id"
+                class="w-full border border-[#D9D6CD] bg-[#FCFBF8] px-3.5 py-2.5 text-sm focus:border-[#A16207] focus:bg-white focus:outline-none">
+                <option value="" disabled @selected(old('class_id') === null)>Pilih Kelas</option>
+                @foreach ($schoolClasses as $class)
+                    <option value="{{ $class->id }}" @selected(old('class_id') == $class->id)>
+                        {{ $class->name }}
+                    </option>
+                @endforeach
+            </select>
+            @error('class_id')
                 <span class="text-red-500 py-2">{{ $message }}</span>
             @enderror
         </div>
 
+        {{-- Buttons --}}
         <div class="flex justify-end gap-4 border-t border-[#EFEDE6] pt-6">
-            <a href="#" class="px-4 py-2.5 text-sm font-medium text-slate-500 hover:text-[#16213A]">
+            <a href="{{ route('students.index') }}" class="px-4 py-2.5 text-sm font-medium text-slate-500 hover:text-[#16213A]">
                 Batal
             </a>
             <button type="submit"

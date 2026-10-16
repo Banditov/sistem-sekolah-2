@@ -13,10 +13,13 @@
             </span>.
         </p>
     </div>
+
     <form action="{{ route('students.update', ['student' => $student->id]) }}" method="POST"
         class="space-y-6 border border-[#E5E3DB] bg-white p-8">
         @csrf
         @method('PUT')
+
+        {{-- NIS --}}
         <div>
             <label for="nis"
                 class="mb-1.5 block text-xs font-semibold uppercase tracking-[0.1em] text-[#16213A]">NIS</label>
@@ -26,6 +29,8 @@
                 <span class="text-red-500 py-2">{{ $message }}</span>
             @enderror
         </div>
+
+        {{-- Name --}}
         <div>
             <label for="name" class="mb-1.5 block text-xs font-semibold uppercase tracking-[0.1em] text-[#16213A]">Nama
                 Lengkap</label>
@@ -34,7 +39,9 @@
             @error('name')
                 <span class="text-red-500 py-2">{{ $message }}</span>
             @enderror
-            </div>
+        </div>
+
+        {{-- Gender --}}
         <div>
             <label for="gender" class="mb-1.5 block text-xs font-semibold uppercase tracking-[0.1em] text-[#16213A]">Jenis
                 Kelamin</label>
@@ -48,29 +55,44 @@
                 <span class="text-red-500 py-2">{{ $message }}</span>
             @enderror
         </div>
+
+        {{-- Major --}}
         <div>
-            <label for="major"
+            <label for="major_id"
                 class="mb-1.5 block text-xs font-semibold uppercase tracking-[0.1em] text-[#16213A]">Jurusan</label>
-            <select id="major" name="major"
+            <select id="major_id" name="major_id"
                 class="w-full border border-[#D9D6CD] bg-[#FCFBF8] px-3.5 py-2.5 text-sm focus:border-[#A16207] focus:bg-white focus:outline-none">
                 <option value="">Pilih Jurusan</option>
-                <option value="AKL" @selected(old('major', $student->major) === 'AKL')>AKL</option>
-                <option value="TKJ" @selected(old('major', $student->major) === 'TKJ')>TKJ</option>
-                <option value="BiD" @selected(old('major', $student->major) === 'BiD')>BiD</option>
+                @foreach ($majors as $major)
+                    <option value="{{ $major->id }}" @selected(old('major_id', $student->major_id) == $major->id)>
+                        {{ $major->name }}
+                    </option>
+                @endforeach
             </select>
-            @error('major')
+            @error('major_id')
                 <span class="text-red-500 py-2">{{ $message }}</span>
             @enderror
         </div>
+
+        {{-- Class --}}
         <div>
-            <label for="class"
+            <label for="class_id"
                 class="mb-1.5 block text-xs font-semibold uppercase tracking-[0.1em] text-[#16213A]">Kelas</label>
-            <input type="text" id="class" name="class" value="{{ old('class', $student->class) }}"
+            <select id="class_id" name="class_id"
                 class="w-full border border-[#D9D6CD] bg-[#FCFBF8] px-3.5 py-2.5 text-sm focus:border-[#A16207] focus:bg-white focus:outline-none">
-            @error('class')
+                <option value="">Pilih Kelas</option>
+                @foreach ($schoolClasses as $class)
+                    <option value="{{ $class->id }}" @selected(old('class_id', $student->class_id) == $class->id)>
+                        {{ $class->name }}
+                    </option>
+                @endforeach
+            </select>
+            @error('class_id')
                 <span class="text-red-500 py-2">{{ $message }}</span>
             @enderror
-            </div>
+        </div>
+
+        {{-- Buttons --}}
         <div class="flex justify-end gap-4 border-t border-[#EFEDE6] pt-6">
             <a href="{{ route('students.index') }}"
                 class="px-4 py-2.5 text-sm font-medium text-slate-500 hover:text-[#16213A]">Batal</a>
