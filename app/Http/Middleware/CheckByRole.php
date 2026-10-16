@@ -18,6 +18,7 @@ class CheckByRole
     {
         $user = auth()->user();
 
+
         if(!in_array($user->role, $roles)) {
             abort(403, 'Anda tidak punya akses ke halaman ini');
         }
